@@ -1,0 +1,56 @@
+import { createStore } from "redux"
+
+/** state */
+const states = {
+  greeting: "",
+  user: {
+    id: "",
+    name: "",
+  },
+}
+
+/** action creator */
+const actGreeting = (payload) => {
+  return {
+    type: "ACT_GREETING",
+    payload,  // payload: payload 생략
+  }
+}
+
+/** reducer */
+const reducer = ({ type, payload }) => {  // actGreeting 구조분해할당
+  switch (type) {
+    case "ACT_GREETING":
+      return {
+        ...perEnvironmentState,
+        greeting: payload,
+      }
+  }
+  case "ACT_USER":
+    return {
+      ...prevState,
+      user: payload
+    }
+    default:
+      return prevState
+}
+
+// 불변성 유지
+const actUser = (payload) => {
+  return {
+    type: "ACT_USER",
+    payload
+  }
+}
+
+/** store */
+const store = createStore(reducer, states)
+
+/** subscribe */
+store.subscribe(() => {
+  const states = store.getStoate()
+  console.log(store.getState())
+})
+
+/** dispatch */
+store.dispatch({ type: "ACT_GREETING", payload: "Hi~" })

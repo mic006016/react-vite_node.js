@@ -1,0 +1,65 @@
+input[type="text"] {
+  padding: 0.5em 1em;
+  border: 1px solid #ccc;
+  border-radius: 0.25em;
+}
+.btn {
+  padding: 0.5em 1em;
+  background-color: #17b5ca;
+  color: #fff;
+  border-radius: 0.25em;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #53e0f3;
+}
+
+.containers {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.containers > .form-wrapper {
+  display: flex;
+  margin: 1em 0;
+  gap: 0.25em;
+}
+.containers .form-wrap {
+  margin-right: auto;
+  position: relative;
+}
+.containers .form-wrap > .btn-delete {
+  font-size: 1.5em;
+  position: absolute;
+  right: 0.25em;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: none;
+}
+.containers .form-wrap > .btn-delete.active {
+  display: block;
+}
+
+.containers > .prd-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.containers .prd-wrap {
+  width: 24%;
+  margin: 1em 0.5%;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+.containers .prd-wrap > .img {
+  margin-bottom: 1em;
+  width: 100%;
+}
+.containers .prd-wrap > .title {
+  font-size: 1.5em;
+  margin-bottom: 0.75em;
+}
+.containers .prd-wrap > .description {
+  font-size: 1em;
+  color: #777;
+}
