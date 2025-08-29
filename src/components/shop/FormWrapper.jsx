@@ -14,7 +14,13 @@ const FormWrapper = ({ onGetPrd, onResetPrd, onChangeSearch }) => {
   return (
     <div className="form-wrapper">
       <form className="form-wrap">
-        <input type="text" className="search-input" onChange={onChange} value={search} autoFocus />
+        <input
+          type="text"
+          className="search-input"
+          onChange={onChange}
+          value={search}
+          autoFocus
+        />
         <span
           className={`fa fa-times btn-delete ${search ? "active" : ""}`}
           onClick={onDeleteSearch}
@@ -29,7 +35,7 @@ const FormWrapper = ({ onGetPrd, onResetPrd, onChangeSearch }) => {
       >
         상품가져오기
       </button>
-      <Button variant="outlined">상품가져오기</Button>
+      <Button variant="contained">상품가져오기</Button>
       <button
         className="btn"
         onClick={(e) => {

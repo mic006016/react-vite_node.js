@@ -30,11 +30,20 @@ export default function ShopPage() {
     }
   }
   return (
-    <div className="containers">
-      <FormWrapper onGetPrd={onGetPrd} onResetPrd={onResetPrd} onChangeSearch={onChangeSearch} />
+    <div className="containers shop-container">
+      <FormWrapper
+        onGetPrd={onGetPrd}
+        onResetPrd={onResetPrd}
+        onChangeSearch={onChangeSearch}
+      />
       <div className="prd-wrapper">
         {searchList.map((prd, idx) => (
-          <PrdWrap key={idx} img={prd.img} title={prd.title} description={prd.description} />
+          <PrdWrap
+            key={idx}
+            img={prd.img}
+            title={prd.title}
+            description={prd.description}
+          />
         ))}
       </div>
     </div>

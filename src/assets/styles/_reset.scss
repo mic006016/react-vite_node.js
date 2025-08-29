@@ -1,36 +1,4 @@
-@charset "UTF-8";
-
-/* 변수 */
-:root {
-  --text-3: #333;
-  --text-5: #555;
-  --text-7: #777;
-  --text-9: #999;
-  --text-a: #aaa;
-  --text-b: #bbb;
-  --text-c: #ccc;
-  --text-d: #ddd;
-  --text-e: #eee;
-  --text-dark: #111;
-  --text-dark-875: rgba(0, 0, 0, 0.875);
-  --text-dark-75: rgba(0, 0, 0, 0.75);
-  --text-dark-625: rgba(0, 0, 0, 0.625);
-  --text-dark-5: rgba(0, 0, 0, 0.5);
-  --text-dark-25: rgba(0, 0, 0, 0.25);
-  --text-light: #f8f8f8;
-  --text-light-875: rgba(255, 255, 255, 0.875);
-  --text-light-75: rgba(255, 255, 255, 0.75);
-  --text-light-625: rgba(255, 255, 255, 0.625);
-  --text-light-5: rgba(255, 255, 255, 0.625);
-  --text-gray: #999;
-
-  --bg-active: #ff5100;
-}
-
-:root[data-darktheme="true"] {
-  --text-dark: #f8f8f8;
-  --text-light: #111;
-}
+@use "./fonts";
 
 /* 전체 */
 * {
@@ -183,7 +151,9 @@ select {
 textarea {
   font-family: inherit;
 }
-table, th, td {
+table,
+th,
+td {
   margin: 0;
   padding: 0;
   border: 0;
@@ -193,7 +163,7 @@ table, th, td {
 }
 
 /* + : sibling 연산자 */
-input[type="radio"], 
+input[type="radio"],
 input[type="checkbox"] {
   margin-right: 0.25em;
   cursor: pointer;
@@ -202,4 +172,12 @@ input[type="radio"] + label,
 input[type="checkbox"] + label {
   margin-right: 1em;
   cursor: pointer;
+}
+input[type="text"] {
+  padding: 0.5em 1em;
+  border: 1px solid #ccc;
+  border-radius: 0.25em;
+}
+.w-100 {
+  width: 100%;
 }
