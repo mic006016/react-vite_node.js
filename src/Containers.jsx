@@ -17,7 +17,7 @@ export default function Containers() {
   })
   return (
     <ThemeProvider theme={themeConfig}>
-      <Container>
+      <Container sx={{ paddingTop: "50px" }}>
         <HeaderWrapper />
         <Routes>
           <Route path="/" element={<HomePage />} />
