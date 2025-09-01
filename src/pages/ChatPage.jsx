@@ -1,5 +1,5 @@
 import { css } from "@emotion/react"
-import { ButtonWrapper, Button } from "@/components/common/Button"
+import { ButtonWrapper, Button } from "@/components/common/form//Button"
 
 const style = css({
   padding: "2em 0",

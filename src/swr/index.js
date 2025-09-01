@@ -38,7 +38,7 @@ export const typiFetcher = (url) => {
 }
 
 export const firebaseGetFetcher = (url) => {
-  const baseURL = "https://jsonplaceholder.typicode.com"
+  const baseURL = import.meta.env.VITE_BOARD_API
   api.get(baseURL + url).then((response) => response.data)
 }
 
