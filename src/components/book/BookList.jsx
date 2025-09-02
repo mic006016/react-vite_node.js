@@ -12,7 +12,7 @@ import {
 import useSWR from "swr"
 import { TestContext } from "@/providers/TestProviders"
 
-export default function BoardList() {
+export default function BookList() {
   const { test, setTest } = useContext(TestContext)
   const { data, error, isLoading } = useSWR("/books")
   useEffect(() => {

@@ -3,7 +3,7 @@ import { ButtonWrapper, Button } from "@/components/common/form//Button"
 import ChatWrapper from "@/components/chat/ChatWrapper"
 
 const style = css({
-  padding: "2em 0",
+  padding: 0,
 })
 
 export default function ChatPage() {

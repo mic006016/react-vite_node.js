@@ -57,8 +57,8 @@ export default function HeaderWrapper() {
           SHOP
         </Typography>
         {isLogOn ? (
-          <Typography component={Link} to="/board">
-            BOARD
+          <Typography component={Link} to="/book">
+            BOOK
           </Typography>
         ) : null}
         {isLogOn ? (

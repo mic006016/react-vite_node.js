@@ -3,10 +3,15 @@ import { ThemeProvider, createTheme } from "@mui/material/styles"
 import HeaderWrapper from "./components/header/HeaderWrapper"
 import HomePage from "./pages/HomePage"
 import ShopPage from "./pages/ShopPage"
-import BoardPage from "./pages/BoardPage"
+import BookPage from "./pages/BookPage"
 import ChatPage from "./pages/ChatPage"
 import { Routes, Route } from "react-router-dom"
 import { useSelector } from "react-redux"
+import styled from "@emotion/styled"
+
+const RoutesWrapper = styled`
+  padding-top: 2em;
+`
 
 export default function Containers() {
   const theme = useSelector((state) => state.ui.theme)
@@ -19,12 +24,14 @@ export default function Containers() {
     <ThemeProvider theme={themeConfig}>
       <Container sx={{ paddingTop: "50px" }}>
         <HeaderWrapper />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/shop" element={<ShopPage />} />
-          <Route path="/board" element={<BoardPage />} />
-          <Route path="/chat" element={<ChatPage />} />
-        </Routes>
+        <RoutesWrapper>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/shop" element={<ShopPage />} />
+            <Route path="/book" element={<BookPage />} />
+            <Route path="/chat" element={<ChatPage />} />
+          </Routes>
+        </RoutesWrapper>
       </Container>
     </ThemeProvider>
   )
