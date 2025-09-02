@@ -32,23 +32,28 @@ use: 미들웨어 함수의 배열 (상세내용)
 
 import { api } from "@/modules/api"
 
-export const typiFetcher = (url) => {
-  const baseURL = "https://jsonplaceholder.typicode.com"
+export const expressFetcher = (url) => {
+  const baseURL = import.meta.env.VITE_EXPRESS_API
   return api.get(baseURL + url).then((response) => response.data)
 }
 
-export const firebaseGetFetcher = (url) => {
+export const typiFetcher = (url) => {
   const baseURL = import.meta.env.VITE_BOARD_API
+  return api.get(baseURL + url).then((response) => response.data)
+}
+// 예시
+export const firebaseGetFetcher = (url) => {
+  const baseURL = "https://api.firenbase.com"
   api.get(baseURL + url).then((response) => response.data)
 }
 
 export const firebasePostFetcher = (url) => {
   const baseURL = "https://jsonplaceholder.typicode.com"
-  api.get(baseURL + url).then((response) => response.data)
+  api.post(baseURL + url).then((response) => response.data)
 }
 export const swrValue = {
   suspense: false,
-  fetcher: typiFetcher,
+  fetcher: expressFetcher,
   revalidateIfStale: false,
   revalidateOnMount: true,
   revalidateOnFocus: true,
