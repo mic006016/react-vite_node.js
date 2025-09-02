@@ -22,7 +22,7 @@ export default function AlertProvider({ children }) {
       value={{ isAlertOpen, setIsAlertOpen, alertMsg, setAlertMsg }}
     >
       {children}
-      <Dialog open={isAlertOpen} onClose={handleClose} sx={{ minWidth: 300 }}>
+      <Dialog open={isAlertOpen} onClose={handleClose}>
         <DialogContent>
           <DialogContentText>{alertMsg}</DialogContentText>
         </DialogContent>
