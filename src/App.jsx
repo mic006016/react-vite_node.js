@@ -10,20 +10,23 @@ import Containers from "./Containers"
 import { swrValue } from "./swr"
 
 import "@/assets/styles/app.scss"
+import AlertProvider from "./providers/AlertProvider"
 
 function App() {
   return (
     <StoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <SWRConfig value={swrValue}>
-          <FirebaseProvider>
-            <BrowserRouter>
-              <TestProvider>
-                <Containers />
-              </TestProvider>
-            </BrowserRouter>
-          </FirebaseProvider>
-        </SWRConfig>
+        <AlertProvider>
+          <SWRConfig value={swrValue}>
+            <FirebaseProvider>
+              <BrowserRouter>
+                <TestProvider>
+                  <Containers />
+                </TestProvider>
+              </BrowserRouter>
+            </FirebaseProvider>
+          </SWRConfig>
+        </AlertProvider>
       </PersistGate>
     </StoreProvider>
   )
