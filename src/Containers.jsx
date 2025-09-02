@@ -9,7 +9,7 @@ import { Routes, Route } from "react-router-dom"
 import { useSelector } from "react-redux"
 import styled from "@emotion/styled"
 
-const RoutesWrapper = styled`
+const RoutesWrapper = styled.div`
   padding-top: 2em;
 `
 
