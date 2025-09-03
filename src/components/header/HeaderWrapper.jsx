@@ -56,11 +56,9 @@ export default function HeaderWrapper() {
         <Typography component={Link} to="/shop">
           SHOP
         </Typography>
-        {isLogOn ? (
-          <Typography component={Link} to="/book">
-            BOOK
-          </Typography>
-        ) : null}
+        <Typography component={Link} to="/book">
+          BOOK
+        </Typography>
         {isLogOn ? (
           <Typography component={Link} to="/chat">
             CHAT
