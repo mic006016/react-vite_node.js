@@ -17,8 +17,8 @@ export default function BookPage() {
     )
   return (
     <Box>
-      <BookForm swr={{ mutate }} /> // 등록하는애 (useSWR)
-      <BookList swr={{ data }} /> // 뿌리는애
+      <BookForm swr={{ mutate }} /> {/* 등록하는애 (useSWR) */}
+      <BookList swr={{ data }} /> {/* 뿌리는애 */}
     </Box>
   )
 }
