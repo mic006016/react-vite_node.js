@@ -4,7 +4,7 @@ import BookForm from "../components/book/BookForm"
 import useSWR from "swr"
 
 export default function BookPage() {
-  const { data, error, isLoading, mutate } = useSWR("/books")
+  const { data, error, isLoading, mutate } = useSWR("/book")
   if (error)
     return (
       <Box sx={{ margin: 20, textAlign: "center" }}>
