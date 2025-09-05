@@ -1,6 +1,8 @@
-import { useState, useActionState, useEffect } from "react"
+import { useState, useActionState, useEffect, useContext } from "react"
 import Button from "@mui/material/Button"
 import styled from "@emotion/styled"
+import axios from "axios"
+import { AlertContext } from "@/providers/AlertProvider"
 
 const FormWrap = styled.form`
   padding: 0.5em;
@@ -31,33 +33,39 @@ const ButtonWrap = styled.div`
 `
 
 export default function JoinForm() {
-  const [form, setForm] = useState({
-    usrNm: "",
-    usrId: "",
-    usrPw: "",
-    usrPwRe: "",
-    usrEmail: "",
-  })
-  const createUser = (prev, data) => {
+  // const [form, setForm] = useState({
+  //   usrNm: "",
+  //   usrId: "",
+  //   usrPw: "",
+  //   usrPwRe: "",
+  //   usrEmail: "",
+  // })
+  // ["usrNm"]: "aa"
+  // const onChangeForm = (e) =>
+  //   setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+
+  const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext)
+  const createUser = async (prev, data) => {
     const usrNm = data.get("usrNm")
     const usrId = data.get("usrId")
     const usrPw = data.get("usrPw")
     const usrPwRe = data.get("usrPwRe")
     const usrEmail = data.get("usrEmail")
     // TODO :: Validation
-    // TODO :: axios
-    const newState = {
-      usrNm,
-      usrId,
-      usrPw,
-      usrEmail,
-      error: null,
+    if (usrPw !== "" && usrPw !== usrPwRe) {
+      setAlertMsg("비밀번호가 일치하지 않습니다.")
+      setIsAlertOpen(true)
+      return { usrNm, usrId, usrEmail, usrPw: "", usrPwRe: "" }
     }
-    return newState
+    // TODO :: axios
+    // const rs = await axios({
+    //   url: import.meta.env.VITE_EXPRESS_API + "/auth/join",
+    //   method: "POST",
+    //   data: { usrNm, usrId, usrPw, usrEmail },
+    // })
+    // console.log(rs)
+    return { usrNm, usrId, usrPw, usrEmail, error: null }
   }
-  // ["usrNm"]: "aa"
-  const onChangeForm = (e) =>
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   const [formState, formAction] = useActionState(createUser, null)
 
   useEffect(() => {
@@ -69,48 +77,23 @@ export default function JoinForm() {
       <FormWrap action={formAction}>
         <FormList>
           <FormListTitle>이름</FormListTitle>
-          <Input
-            type="text"
-            name="usrNm"
-            value={form.usrNm}
-            onChange={onChangeForm}
-          />
+          <Input type="text" name="usrNm" />
         </FormList>
         <FormList>
           <FormListTitle>아이디</FormListTitle>
-          <Input
-            type="text"
-            name="usrId"
-            value={form.usrId}
-            onChange={onChangeForm}
-          />
+          <Input type="text" name="usrId" />
         </FormList>
         <FormList>
           <FormListTitle>비밀번호</FormListTitle>
-          <Input
-            type="password"
-            name="usrPw"
-            value={form.usrPw}
-            onChange={onChangeForm}
-          />
+          <Input type="password" name="usrPw" />
         </FormList>
         <FormList>
           <FormListTitle>비밀번호재입력</FormListTitle>
-          <Input
-            type="password"
-            name="usrPwRe"
-            value={form.usrPwRe}
-            onChange={onChangeForm}
-          />
+          <Input type="password" name="usrPwRe" />
         </FormList>
         <FormList>
           <FormListTitle>이메일</FormListTitle>
-          <Input
-            type="text"
-            name="usrEmail"
-            value={form.usrEmail}
-            onChange={onChangeForm}
-          />
+          <Input type="text" name="usrEmail" />
         </FormList>
         <ButtonWrap>
           <Button variant="contained" type="submit">
