@@ -9,10 +9,15 @@ import {
 import { Link } from "react-router-dom"
 import styled from "@emotion/styled"
 import { css } from "@emotion/react"
-
+import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { setTheme, toggleTheme } from "@/store/reducers/ui-slice"
-import { logOn, logOut } from "@/store/reducers/auth-slice"
+import {
+  logOn,
+  logOut,
+  localLogOn,
+  localLogOut,
+} from "@/store/reducers/auth-slice"
 import { useContext, useEffect } from "react"
 import { FirebaseContext } from "@/providers/FirebaseProvider"
 
@@ -31,21 +36,30 @@ const HeaderRoot = styled.div`
 `
 
 export default function HeaderWrapper() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const theme = useSelector((state) => state.ui.theme)
-  const { isLogging, isLogOn, user } = useSelector((state) => state.auth) // initialState 구조분해할당
+  const { isLogging, isLogOn, user, isLocalLogging, isLocalLogOn, localUser } =
+    useSelector((state) => state.auth)
   const { signInWithPopup, auth, googleProvider } = useContext(FirebaseContext)
 
   const onGoogleLogIn = async (e) => {
     const rs = await signInWithPopup(auth, googleProvider)
     const { uid = "", email = "", displayName: name = "" } = rs?.user || {}
-    // const user = { uid, email, name }, const isLogOn = !!rs?.user
-    dispatch(logOn({ user: { uid, email, name }, isLogOn: !!rs?.user })) //dispatch(logOn(user)) 구조분해할당 / dispatch -> actionCreator 실행
+    dispatch(logOn({ user: { uid, email, name }, isLogOn: !!rs?.user }))
   }
 
   useEffect(() => {
     console.log("로그인상태: ", isLogOn)
   }, [isLogOn])
+
+  useEffect(() => {
+    const consol = () => {
+      console.log("HeaderWrapper")
+    }
+    consol()
+    return consol
+  }, [])
 
   return (
     <HeaderRoot>
@@ -68,7 +82,7 @@ export default function HeaderWrapper() {
       <Box>
         {!isLogOn ? (
           <Button variant="contained" sx={{ mr: 1 }} onClick={onGoogleLogIn}>
-            구글로그인
+            채팅로그인
           </Button>
         ) : null}
         {isLogOn ? (
@@ -77,12 +91,34 @@ export default function HeaderWrapper() {
             sx={{ mr: 1 }}
             onClick={() => dispatch(logOut())}
           >
-            로그아웃
+            {user.name} 채팅로그아웃
           </Button>
         ) : null}
-        {!isLogOn ? (
-          <Button variant="outlined" sx={{ mr: 2 }}>
+        {!isLocalLogOn ? (
+          <Button
+            variant="outlined"
+            sx={{ mr: 2 }}
+            onClick={() => navigate("/join")}
+          >
             회원가입
+          </Button>
+        ) : null}
+        {!isLocalLogOn ? (
+          <Button
+            variant="outlined"
+            sx={{ mr: 2 }}
+            onClick={() => dispatch(logOut())}
+          >
+            로그인
+          </Button>
+        ) : null}
+        {isLocalLogOn ? (
+          <Button
+            variant="outlined"
+            sx={{ mr: 2 }}
+            onClick={() => dispatch(localLogOut())}
+          >
+            로그아웃
           </Button>
         ) : null}
         <FormControlLabel

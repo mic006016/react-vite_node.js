@@ -3,8 +3,6 @@ import styled from "@emotion/styled"
 import { Button } from "@mui/material"
 import { AlertContext } from "@/providers/AlertProvider"
 import axios from "axios"
-import { DayPicker } from "react-day-picker"
-import "react-day-picker/style.css"
 
 const FormWrap = styled.form`
   display: flex;
@@ -19,10 +17,6 @@ const Input = styled.input`
   margin-right: 0.5em;
   flex-grow: ${(props) => props.grow};
   box-sizing: border-box;
-`
-const DateWrap = styled.div`
-  position: relative;
-  flex-grow: ${(props) => props.grow};
 `
 export default function BookForm({ swr }) {
   const [selected, setSelected] = useState("")
