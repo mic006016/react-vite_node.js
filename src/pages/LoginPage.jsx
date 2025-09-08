@@ -1,0 +1,10 @@
+import { Box, Typography } from "@mui/material"
+import LoginForm from "@/components/auth/LoginForm"
+
+export default function LoginPage() {
+  return (
+    <Box>
+      <LoginForm />
+    </Box>
+  )
+}

@@ -32,8 +32,8 @@ const authSlice = createSlice({
     },
     localLogOn: (state, action) => {
       state.isLocalLogging = false
-      state.isLocalLogOn = !!action.payload.isLocalLogOn
-      state.localUser = action.payload.localUser
+      state.isLocalLogOn = !!action.payload
+      state.localUser = action.payload
       state.localError = null
     },
     localLogOut: (state) => {
