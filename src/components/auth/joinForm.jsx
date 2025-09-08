@@ -3,6 +3,7 @@ import Button from "@mui/material/Button"
 import styled from "@emotion/styled"
 import axios from "axios"
 import { AlertContext } from "@/providers/AlertProvider"
+import { useNavigate } from "react-router-dom"
 
 const FormWrap = styled.form`
   padding: 0.5em;
@@ -33,6 +34,7 @@ const ButtonWrap = styled.div`
 `
 
 export default function JoinForm() {
+  const navigate = useNavigate()
   const [form, setForm] = useState({
     usrNm: "",
     usrId: "",
@@ -59,12 +61,21 @@ export default function JoinForm() {
     }
     // TODO :: axios
     const rs = await axios({
-      url: import.meta.env.VITE_EXPRESS_API + "/auth/join",
+      url: import.meta.env.VITE_EXPRESS_API + "/public/join",
       method: "POST",
       data: { usrNm, usrId, usrPw, usrEmail },
     })
-    console.log(rs)
-    return { usrNm, usrId, usrPw, usrEmail, error: null }
+    if (rs?.data?.success === "OK") {
+      // TODO :: 성공처리
+      setIsAlertOpen(true)
+      setAlertMsg("회원가입이 완료되었습니다.")
+      navigate("/")
+    } else {
+      // TODO :: 실패처리
+      setIsAlertOpen(true)
+      setAlertMsg(rs?.data?.error?.msg || "오류입니다")
+      return { usrNm, usrId, usrPw, usrEmail, error: null }
+    }
   }
   const [formState, formAction] = useActionState(createUser, null)
 
