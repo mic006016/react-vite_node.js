@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux"
 import { localLogOn } from "@/store/reducers/auth-slice"
 import Button from "@mui/material/Button"
 import styled from "@emotion/styled"
-import axios from "axios"
 import { AlertContext } from "@/providers/AlertProvider"
 import { useNavigate } from "react-router-dom"
 import { setTokens } from "@/modules/api"
+import { api } from "@/modules/api"
 
 const FormWrapper = styled.div`
   display: flex;
@@ -65,9 +65,9 @@ export default function LoginForm() {
       setIsAlertOpen(true)
       return { usrId, usrPw }
     }
-    const rs = await axios({
-      url: import.meta.env.VITE_EXPRESS_API + "/public/login",
-      method: "POST",
+    const rs = await api({
+      url: "/public/login",
+      type: "POST",
       data: { usrId, usrPw },
     })
     if (rs?.data?.success === "OK") {

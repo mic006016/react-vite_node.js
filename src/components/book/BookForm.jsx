@@ -2,7 +2,9 @@ import { useState, useContext } from "react"
 import styled from "@emotion/styled"
 import { Button } from "@mui/material"
 import { AlertContext } from "@/providers/AlertProvider"
-import axios from "axios"
+import { DayPicker } from "react-day-picker"
+import "react-day-picker/style.css"
+import { api } from "@/modules/api"
 
 const FormWrap = styled.form`
   display: flex;
@@ -11,12 +13,14 @@ const FormWrap = styled.form`
   margin-bottom: 1em;
 `
 const Input = styled.input`
-  min-width: 0;
   padding: 0.25em 0.5em;
   border: 1px solid #ccc;
   margin-right: 0.5em;
   flex-grow: ${(props) => props.grow};
-  box-sizing: border-box;
+`
+const DateWrap = styled.div`
+  position: relative;
+  flex-grow: ${(props) => props.grow};
 `
 export default function BookForm({ swr }) {
   const [selected, setSelected] = useState("")
@@ -38,9 +42,9 @@ export default function BookForm({ swr }) {
       setAlertMsg("내용은 필수사항입니다.")
       return
     }
-    const { data } = await axios({
-      url: import.meta.env.VITE_EXPRESS_API + "/book",
-      method: "post",
+    const { data } = await api({
+      url: "/book",
+      type: "POST",
       data: {
         title: form.title,
         content: form.content,

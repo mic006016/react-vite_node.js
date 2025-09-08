@@ -41,7 +41,6 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    // config 수정후 리턴
     const url = config.url || ""
     const isPublic = url.toUpperCase().includes("PUBLIC")
     if (!isPublic) {
@@ -54,6 +53,8 @@ instance.interceptors.request.use(
     if (config.method?.toUpperCase() === "FILE") {
       config.headers["Content-Type"] = "multipart/form-data"
       config.method = "POST"
+    } else {
+      config.headers["Content-Type"] = "application/json"
     }
     return config
   },
@@ -62,7 +63,6 @@ instance.interceptors.request.use(
   }
 )
 
-// 응답후 - 에러처리
 instance.interceptors.response.use(
   (response) => {
     return response
@@ -78,11 +78,9 @@ instance.interceptors.response.use(
   }
 )
 
+// data: post, params: get
 const api = ({ url, type = "GET", data = null, params = null }) => {
   let method = type.toUpperCase()
-  if (method === "FILE") {
-    method = "POST"
-  }
   return instance({
     method,
     url,

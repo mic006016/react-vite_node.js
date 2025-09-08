@@ -1,7 +1,7 @@
 import { useState, useActionState, useEffect, useContext } from "react"
 import Button from "@mui/material/Button"
 import styled from "@emotion/styled"
-import axios from "axios"
+import { api } from "@/modules/api"
 import { AlertContext } from "@/providers/AlertProvider"
 import { useNavigate } from "react-router-dom"
 
@@ -60,9 +60,9 @@ export default function JoinForm() {
       return { usrNm, usrId, usrEmail, usrPw: "", usrPwRe: "" }
     }
     // TODO :: axios
-    const rs = await axios({
-      url: import.meta.env.VITE_EXPRESS_API + "/public/join",
-      method: "POST",
+    const rs = await api({
+      url: "/public/join",
+      type: "POST",
       data: { usrNm, usrId, usrPw, usrEmail },
     })
     if (rs?.data?.success === "OK") {
