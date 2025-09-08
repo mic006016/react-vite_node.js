@@ -107,7 +107,7 @@ export default function HeaderWrapper() {
           <Button
             variant="outlined"
             sx={{ mr: 2 }}
-            onClick={() => dispatch(logOut())}
+            onClick={() => navigate("/login")}
           >
             로그인
           </Button>

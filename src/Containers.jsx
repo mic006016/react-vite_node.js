@@ -6,6 +6,7 @@ import ShopPage from "./pages/ShopPage"
 import BookPage from "./pages/BookPage"
 import ChatPage from "./pages/ChatPage"
 import JoinPage from "./pages/JoinPage"
+import LoginPage from "./pages/LoginPage"
 import { Routes, Route } from "react-router-dom"
 import { useSelector } from "react-redux"
 import styled from "@emotion/styled"
@@ -31,9 +32,11 @@ export default function Containers() {
             <Route path="/book" element={<BookPage />} />
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/join" element={<JoinPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </RoutesWrapper>
       </Container>
     </ThemeProvider>
   )
 }
+s
