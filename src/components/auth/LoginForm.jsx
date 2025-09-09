@@ -70,19 +70,16 @@ export default function LoginForm() {
       type: "POST",
       data: { usrId, usrPw },
     })
-    if (rs?.data?.success === "OK") {
+    if (rs?.success === "OK") {
       dispatch(localLogOn(rs?.data?.data?.user || {}))
-      setTokens(
-        rs?.data?.data?.accessToken || "",
-        rs?.data?.data?.refreshToken || ""
-      )
+      setTokens(rs?.data?.accessToken || "", rs?.data?.refreshToken || "")
       setIsAlertOpen(true)
       setAlertMsg("로그인 되었습니다.")
 
       navigate("/")
     } else {
       setIsAlertOpen(true)
-      setAlertMsg(rs?.data?.error?.msg || "오류입니다")
+      setAlertMsg(rs?.error?.msg || "오류입니다")
       return { usrId: "", usrPw: "", error: null }
     }
   }

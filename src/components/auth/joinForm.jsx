@@ -65,7 +65,7 @@ export default function JoinForm() {
       type: "POST",
       data: { usrNm, usrId, usrPw, usrEmail },
     })
-    if (rs?.data?.success === "OK") {
+    if (rs?.success === "OK") {
       // TODO :: 성공처리
       setIsAlertOpen(true)
       setAlertMsg("회원가입이 완료되었습니다.")
@@ -73,7 +73,7 @@ export default function JoinForm() {
     } else {
       // TODO :: 실패처리
       setIsAlertOpen(true)
-      setAlertMsg(rs?.data?.error?.msg || "오류입니다")
+      setAlertMsg(rs?.error?.msg || "오류입니다")
       return { usrNm, usrId, usrPw, usrEmail, error: null }
     }
   }

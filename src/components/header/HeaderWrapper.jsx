@@ -50,6 +50,12 @@ export default function HeaderWrapper() {
     dispatch(logOn({ user: { uid, email, name }, isLogOn: !!rs?.user }))
   }
 
+  const onLogOut = (e) => {
+    dispatch(localLogOut())
+    window.localStorage.removeItem("accessToken")
+    window.localStorage.removeItem("refreshToken")
+  }
+
   useEffect(() => {
     console.log("로그인상태: ", isLogOn)
   }, [isLogOn])
@@ -65,7 +71,7 @@ export default function HeaderWrapper() {
   return (
     <HeaderRoot>
       <Typography variant="h4" component={Link} to="/">
-        yellowoobi
+        Booldook
       </Typography>
       <Breadcrumbs>
         <Typography component={Link} to="/shop">
@@ -81,13 +87,13 @@ export default function HeaderWrapper() {
         ) : null}
       </Breadcrumbs>
       <Box>
-        <Button
+        {/* <Button
           variant="outlined"
           sx={{ mr: 2 }}
           onClick={() => retrieveToken()}
         >
           토큰갱신(임시)
-        </Button>
+        </Button> */}
         {!isLogOn ? (
           <Button variant="contained" sx={{ mr: 1 }} onClick={onGoogleLogIn}>
             채팅로그인
@@ -121,11 +127,7 @@ export default function HeaderWrapper() {
           </Button>
         ) : null}
         {isLocalLogOn ? (
-          <Button
-            variant="outlined"
-            sx={{ mr: 2 }}
-            onClick={() => dispatch(localLogOut())}
-          >
+          <Button variant="outlined" sx={{ mr: 2 }} onClick={onLogOut}>
             로그아웃
           </Button>
         ) : null}

@@ -1,4 +1,7 @@
 /**
+ * axios -> rs : { config, headers, ... error, data }
+ * rs.data -> { success: "OK" | "FAIL", data?: {}, error?: {} }
+ *
  * 1. api 공통 파라메터 생성
  * 2. 토큰 저장/가져오는 함수(LocalStorage)
  * 3. interceptors.request 토큰 탑재
@@ -11,6 +14,10 @@ import axios from "axios"
 export const BASE_URL = import.meta.env.VITE_EXPRESS_API
 export const REFRESH_URL = import.meta.env.VITE_REFRESH_API
 export const TIMEOUT = Number(import.meta.env.VITE_TIMEOUT_API)
+
+/***** 전역변수 *****/
+let promiseQueue = []
+let isUpdatingToken = false
 
 /***** 토큰 Getter/Setter *****/
 export const getAccessToken = () => {
@@ -40,7 +47,9 @@ export const retrieveToken = async () => {
   const refreshToken = getRefreshToken()
   if (!refreshToken) {
     clearTokens()
-    throw new Error("토큰만료")
+    window.dispatchEvent(
+      new CustomEvent("ERROR_API", { code: 403, msg: "리프레시 토큰 오류" })
+    )
   }
   const rs = await api({
     url: "/public/refresh",
@@ -49,16 +58,24 @@ export const retrieveToken = async () => {
       refreshToken,
     },
   })
-  console.log(rs)
-  // setTokens({ accessToken: rs.accessToken, refreshToken: rs.refreshToken })
-  return rs ? true : false
+  if (rs?.success === "OK") {
+    setTokens(rs?.data?.accessToken, rs?.data?.refreshToken)
+    promiseQueue.forEach((config) => {
+      instance(config)
+    })
+    isUpdatingToken = false
+    promiseQueue = []
+  }
+  return rs?.success === "OK"
 }
 
+/***** Axios Instance *****/
 const instance = axios.create({
   baseURL: BASE_URL,
   timeout: TIMEOUT,
 })
 
+/***** Axios Request 콜백 *****/
 instance.interceptors.request.use(
   (config) => {
     const url = config.url || ""
@@ -79,36 +96,43 @@ instance.interceptors.request.use(
     return config
   },
   (error) => {
-    return Promise.reject(error)
+    return Promise.resolve(null)
+    // return Promise.reject(error)
   }
 )
 
+/***** Axios Response 콜백 *****/
 instance.interceptors.response.use(
   (response) => {
     return response
   },
-  (error) => {
-    if (error.response?.status === 401) {
+  async (error) => {
+    if (error?.status === 401) {
+      console.log("===== 리플래시 토큰 갱신 요청 =====")
       // TODO :: 리플래시 토큰 요청 코드
-      // if (retrieveToken()) {
-      // }
+      retrieveToken()
+      promiseQueue.push(error.config)
+      isUpdatingToken = true
     }
     if (error.response?.status === 500) {
       // 공통 에러 처리
     }
-    return Promise.reject(error)
+    return Promise.resolve(null)
+    // return Promise.reject(error)
   }
 )
 
 // data: post, params: get
-const api = ({ url, type = "GET", data = null, params = null }) => {
+const api = async ({ url, type = "GET", data = null, params = null }) => {
   let method = type.toUpperCase()
-  return instance({
+  const response = await instance({
     method,
     url,
     data,
     params,
   })
+  // TODO :: response.error
+  return response?.data || null
 }
 
 export { api }

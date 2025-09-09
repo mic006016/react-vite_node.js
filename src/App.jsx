@@ -21,7 +21,9 @@ function App() {
             <FirebaseProvider>
               <BrowserRouter>
                 <TestProvider>
-                  <Containers />
+                  <ErrorProvider>
+                    <Containers />
+                  </ErrorProvider>
                 </TestProvider>
               </BrowserRouter>
             </FirebaseProvider>

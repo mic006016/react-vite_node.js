@@ -42,7 +42,7 @@ export default function BookForm({ swr }) {
       setAlertMsg("내용은 필수사항입니다.")
       return
     }
-    const { data } = await api({
+    const rs = await api({
       url: "/book",
       type: "POST",
       data: {
@@ -52,7 +52,7 @@ export default function BookForm({ swr }) {
         publish_d: form.publish_d,
       },
     })
-    if (data?.success === "OK") swr.mutate()
+    if (rs?.success === "OK") swr.mutate()
   }
   const onClickDate = (e) => {}
   return (
