@@ -29,9 +29,29 @@ export const setTokens = (accessToken, refreshToken) => {
   window.localStorage.setItem("accessToken", accessToken)
   window.localStorage.setItem("refreshToken", refreshToken)
 }
-export const crearTokens = () => {
+export const clearTokens = () => {
   window.localStorage.removeItem("accessToken")
   window.localStorage.removeItem("refreshToken")
+}
+
+/***** Token 갱신 API *****/
+// 401이 리턴되면 refreshToken을 실어서 API요청을 보내고, 응답받은 토큰을 저장
+export const retrieveToken = async () => {
+  const refreshToken = getRefreshToken()
+  if (!refreshToken) {
+    clearTokens()
+    throw new Error("토큰만료")
+  }
+  const rs = await api({
+    url: "/public/refresh",
+    type: "POST",
+    data: {
+      refreshToken,
+    },
+  })
+  console.log(rs)
+  // setTokens({ accessToken: rs.accessToken, refreshToken: rs.refreshToken })
+  return rs ? true : false
 }
 
 const instance = axios.create({
@@ -44,9 +64,9 @@ instance.interceptors.request.use(
     const url = config.url || ""
     const isPublic = url.toUpperCase().includes("PUBLIC")
     if (!isPublic) {
-      const token = getAccessToken()
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`
+      const accessToken = getAccessToken()
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`
         config.headers.withCredentials = true
       }
     }
@@ -70,6 +90,8 @@ instance.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // TODO :: 리플래시 토큰 요청 코드
+      // if (retrieveToken()) {
+      // }
     }
     if (error.response?.status === 500) {
       // 공통 에러 처리

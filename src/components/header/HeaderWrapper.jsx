@@ -20,6 +20,7 @@ import {
 } from "@/store/reducers/auth-slice"
 import { useContext, useEffect } from "react"
 import { FirebaseContext } from "@/providers/FirebaseProvider"
+import { retrieveToken } from "@/modules/api"
 
 const HeaderRoot = styled.div`
   display: flex;
@@ -80,6 +81,13 @@ export default function HeaderWrapper() {
         ) : null}
       </Breadcrumbs>
       <Box>
+        <Button
+          variant="outlined"
+          sx={{ mr: 2 }}
+          onClick={() => retrieveToken()}
+        >
+          토큰갱신(임시)
+        </Button>
         {!isLogOn ? (
           <Button variant="contained" sx={{ mr: 1 }} onClick={onGoogleLogIn}>
             채팅로그인
