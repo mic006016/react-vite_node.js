@@ -29,6 +29,7 @@ export default function BookForm({ swr }) {
     content: "",
     writer: "",
     publish_d: "",
+    upfile: null,
   })
   const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext)
   const onSubmit = async (e) => {
@@ -83,6 +84,16 @@ export default function BookForm({ swr }) {
         grow={1}
         onChange={(e) =>
           setForm((prev) => ({ ...prev, publish_d: e.target.value }))
+        }
+      />
+      <Input
+        type="file"
+        name="upfile"
+        placeholder="첨부파일"
+        value={form.upfile}
+        grow={1}
+        onChange={(e) =>
+          setForm((prev) => ({ ...prev, upfile: e.target.value }))
         }
       />
       <Button variant="contained" onClick={onSubmit}>
