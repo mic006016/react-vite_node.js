@@ -154,13 +154,7 @@ export const swrValue = {
   // 데이터 페칭 중 에러가 발생했을 때 호출되는 콜백 함수.
   // err: 발생한 에러 객체, key: 요청된 키, config: SWR 설정 객체.
   // 현재는 에러, 키, 설정을 콘솔에 출력하도록 정의됨.
-  onError: (err, key, config) => {
-    console.log(err, key, config)
-    console.log("여기2")
-    window.dispatchEvent(
-      new CustomEvent("ERROR_API", { code: 403, msg: "리플래시 토큰 오류" })
-    )
-  },
+  onError: (err, key, config) => {},
 
   // onErrorRetry: (err, key, config, revalidate, revalidateOps) => {},
   // 에러 발생 후 재시도 로직을 커스터마이징하는 콜백 함수.

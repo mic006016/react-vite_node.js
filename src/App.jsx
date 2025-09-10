@@ -11,26 +11,29 @@ import { swrValue } from "./swr"
 
 import "@/assets/styles/app.scss"
 import AlertProvider from "./providers/AlertProvider"
+import ErrorProvider from "./providers/ErrorProviders"
 
 function App() {
   return (
-    <StoreProvider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <AlertProvider>
-          <SWRConfig value={swrValue}>
-            <FirebaseProvider>
-              <BrowserRouter>
-                <TestProvider>
-                  <ErrorProvider>
-                    <Containers />
-                  </ErrorProvider>
-                </TestProvider>
-              </BrowserRouter>
-            </FirebaseProvider>
-          </SWRConfig>
-        </AlertProvider>
-      </PersistGate>
-    </StoreProvider>
+    <ErrorProvider>
+      <StoreProvider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <AlertProvider>
+            <SWRConfig value={swrValue}>
+              <FirebaseProvider>
+                <BrowserRouter>
+                  <TestProvider>
+                    <ErrorProvider>
+                      <Containers />
+                    </ErrorProvider>
+                  </TestProvider>
+                </BrowserRouter>
+              </FirebaseProvider>
+            </SWRConfig>
+          </AlertProvider>
+        </PersistGate>
+      </StoreProvider>
+    </ErrorProvider>
   )
 }
 
