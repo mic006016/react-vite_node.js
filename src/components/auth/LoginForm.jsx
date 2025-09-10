@@ -73,11 +73,8 @@ export default function LoginForm() {
       setAlertMsg("로그인 되었습니다.")
 
       navigate("/")
-    } else {
-      setIsAlertOpen(true)
-      setAlertMsg(rs?.error?.msg || "오류입니다")
-      return { usrId: "", usrPw: "", error: null }
     }
+    return { usrId: "", usrPw: "", error: null }
   }
   const [formState, formAction] = useActionState(loginUser, null)
 

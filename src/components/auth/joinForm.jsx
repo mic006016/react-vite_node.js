@@ -66,12 +66,8 @@ export default function JoinForm() {
       setIsAlertOpen(true)
       setAlertMsg("회원가입이 완료되었습니다.")
       navigate("/")
-    } else {
-      // TODO :: 실패처리
-      setIsAlertOpen(true)
-      setAlertMsg(rs?.error?.msg || "오류입니다")
-      return { usrNm, usrId, usrPw, usrEmail, error: null }
     }
+    return { usrNm, usrId, usrPw, usrEmail, error: null }
   }
   const [formState, formAction] = useActionState(createUser, null)
 

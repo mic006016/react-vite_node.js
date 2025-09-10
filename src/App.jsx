@@ -11,7 +11,7 @@ import { swrValue } from "./swr"
 
 import "@/assets/styles/app.scss"
 import AlertProvider from "./providers/AlertProvider"
-import ErrorProvider from "./providers/ErrorProviders"
+import ErrorProvider from "./providers/ErrorProvider"
 import { ErrorBoundary } from "react-error-boundary"
 import ErrorFallback from "@/components/common/ErrorFallBack"
 
@@ -38,3 +38,5 @@ function App() {
     </ErrorBoundary>
   )
 }
+
+export default app

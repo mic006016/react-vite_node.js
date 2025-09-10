@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import {
   Button,
   Dialog,
@@ -6,16 +6,26 @@ import {
   DialogContent,
   DialogContentText,
 } from "@mui/material"
+import { ErrorContext } from "@/providers/ErrorProvider"
 export const AlertContext = createContext()
 
 export default function AlertProvider({ children }) {
   const [isAlertOpen, setIsAlertOpen] = useState(false)
   const [alertMsg, setAlertMsg] = useState("")
+  const { rootError } = useContext(ErrorContext)
 
   const handleClose = (e) => {
     setIsAlertOpen(false)
     setAlertMsg("")
   }
+
+  useEffect(() => {
+    if (rootError) {
+      console.log(rootError)
+      setIsAlertOpen(true)
+      setAlertMsg(rootError?.msg || "알 수 없는 오류")
+    }
+  }, [rootError])
 
   return (
     <AlertContext.Provider

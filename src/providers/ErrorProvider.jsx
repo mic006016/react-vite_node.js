@@ -12,11 +12,15 @@ export default function ErrorProvider({ children }) {
   useEffect(() => {
     const onError = (e) => {
       console.log("ErrorProvider", e)
-      showBoundary(e)
+      if (e?.detail?.cod === 403) {
+        location.href = "/login"
+      } else {
+        showBoundary(e)
+      }
     }
     const onBizError = (e) => {
       console.log("ErrorProvider", e)
-      // showBoundary(e)
+      setRootError(e.detail)
     }
 
     window.addEventListener("ERROR_API", onError)
@@ -28,7 +32,7 @@ export default function ErrorProvider({ children }) {
   }, [])
 
   return (
-    <ErrorContext.Provider value={{ rootError, setRootError }}>
+    <ErrorContext.Provider value={{ rootError }}>
       {children}
     </ErrorContext.Provider>
   )
