@@ -12,29 +12,29 @@ import { swrValue } from "./swr"
 import "@/assets/styles/app.scss"
 import AlertProvider from "./providers/AlertProvider"
 import ErrorProvider from "./providers/ErrorProviders"
+import { ErrorBoundary } from "react-error-boundary"
+import ErrorFallback from "@/components/common/ErrorFallBack"
 
 function App() {
   return (
-    <ErrorProvider>
-      <StoreProvider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <AlertProvider>
-            <SWRConfig value={swrValue}>
-              <FirebaseProvider>
-                <BrowserRouter>
-                  <TestProvider>
-                    <ErrorProvider>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <ErrorProvider>
+        <StoreProvider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <AlertProvider>
+              <SWRConfig value={swrValue}>
+                <FirebaseProvider>
+                  <BrowserRouter>
+                    <TestProvider>
                       <Containers />
-                    </ErrorProvider>
-                  </TestProvider>
-                </BrowserRouter>
-              </FirebaseProvider>
-            </SWRConfig>
-          </AlertProvider>
-        </PersistGate>
-      </StoreProvider>
-    </ErrorProvider>
+                    </TestProvider>
+                  </BrowserRouter>
+                </FirebaseProvider>
+              </SWRConfig>
+            </AlertProvider>
+          </PersistGate>
+        </StoreProvider>
+      </ErrorProvider>
+    </ErrorBoundary>
   )
 }
-
-export default App

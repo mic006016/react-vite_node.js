@@ -48,26 +48,18 @@ export const retrieveToken = async () => {
   if (!refreshToken) {
     clearTokens()
     window.dispatchEvent(
-      new CustomEvent("ERROR_API", { code: 403, msg: "리프레시 토큰 오류" })
+      new CustomEvent("ERROR_API", {
+        detail: { cod: 403, msg: "리플래시 토큰 오류" },
+      })
     )
   } else {
-    const rs = await api({
-      url: "/public/refresh",
-      type: "POST",
-      data: {
-        refreshToken,
-      },
-    })
+    const rs = await apiPost("/public/refresh", { refreshToken })
+    if (rs?.success === "OK") {
+      setTokens(rs?.data?.accessToken, rs?.data?.refreshToken)
+      return true
+    }
   }
-  if (rs?.success === "OK") {
-    setTokens(rs?.data?.accessToken, rs?.data?.refreshToken)
-    promiseQueue.forEach((config) => {
-      instance(config)
-    })
-    isUpdatingToken = false
-    promiseQueue = []
-  }
-  return rs?.success === "OK"
+  return false
 }
 
 /***** Axios Instance *****/
@@ -96,47 +88,83 @@ instance.interceptors.request.use(
     }
     return config
   },
-  (error) => {
-    return Promise.resolve(null)
-    // return Promise.reject(error)
+  (err) => {
+    window.dispatchEvent(
+      new CustomEvent("ERROR_API", {
+        detail: { cod: 403, msg: "API 요청 오류", err },
+      })
+    )
+    return Promise.reject(null)
   }
 )
 
 /***** Axios Response 콜백 *****/
 instance.interceptors.response.use(
   (response) => {
-    return response
+    if (response.data?.success === "FAIL" && response.data?.error) {
+      // 비지니스에러
+      const { cod, msg, data } = response.data?.error || {}
+      window.dispatchEvent(
+        new CustomEvent("ERROR_BIZ", {
+          detail: { cod, msg, data },
+        })
+      )
+      return null
+    }
+    return response?.data || null
   },
   async (error) => {
     if (error?.status === 401) {
       console.log("===== 리플래시 토큰 갱신 요청 =====")
       if (!isUpdatingToken) {
-        // 리플래시 토큰 요청 코드
-        retrieveToken()
-        promiseQueue.push(error.config)
-        isUpdatingToken = true
+        // 갱신중
+        if (retrieveToken()) {
+          promiseQueue.forEach((config) => instance(config))
+          isUpdatingToken = false
+          promiseQueue = []
+        } else {
+          promiseQueue.push(error.config)
+        }
       }
-      promiseQueue.push(error.config)
+    } else {
+      // 공통 에러 처리 500등
+      const { cod, msg, data } = error?.response?.data?.error || {}
+      window.dispatchEvent(
+        new CustomEvent("ERROR_API", {
+          detail: { cod, msg, data },
+        })
+      )
     }
-    if (error.response?.status === 500) {
-      // 공통 에러 처리
-    }
-    return Promise.resolve(null)
-    // return Promise.reject(error)
+    return Promise.reject(null)
   }
 )
 
 // data: post, params: get
-const api = async ({ url, type = "GET", data = null, params = null }) => {
-  let method = type.toUpperCase()
+const api = async (url, params = null) => {
   const response = await instance({
-    method,
+    method: "GET",
     url,
-    data,
     params,
   })
-  // TODO :: response.error
-  return response?.data || null
+  return response || null
 }
 
-export { api }
+const apiPost = async (url, data = null) => {
+  const response = await instance({
+    method: "POST",
+    url,
+    data,
+  })
+  return response || null
+}
+
+const apiFile = async (url, data = null) => {
+  const response = await instance({
+    method: "FILE",
+    url,
+    data,
+  })
+  return response || null
+}
+
+export { api, apiPost, apiFile }

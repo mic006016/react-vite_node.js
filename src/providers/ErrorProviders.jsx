@@ -2,19 +2,23 @@
 // ERROR_BIZ -> Alert으로 보내서 alert창을 띄운다.
 
 import { createContext, useContext, useEffect, useState } from "react"
+import { useErrorBoundary } from "react-error-boundary"
 
 export const ErrorContext = createContext()
-
 export default function ErrorProvider({ children }) {
   const [rootError, setRootError] = useState(null)
+  const { showBoundary } = useErrorBoundary()
 
   useEffect(() => {
     const onError = (e) => {
       console.log("ErrorProvider", e)
+      showBoundary(e)
     }
     const onBizError = (e) => {
       console.log("ErrorProvider", e)
+      // showBoundary(e)
     }
+
     window.addEventListener("ERROR_API", onError)
     window.addEventListener("ERROR_BIZ", onBizError)
     return () => {

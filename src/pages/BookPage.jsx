@@ -4,7 +4,7 @@ import BookForm from "../components/book/BookForm"
 import useSWR from "swr"
 
 export default function BookPage() {
-  const { data, error, isLoading, mutate } = useSWR("/book")
+  const { data, error, isLoading, mutate } = useSWR("/bookSS")
   if (error)
     return (
       <Box sx={{ margin: 20, textAlign: "center" }}>
@@ -17,8 +17,8 @@ export default function BookPage() {
     )
   return (
     <Box>
-      <BookForm swr={{ mutate }} /> {/* 등록하는애 (useSWR) */}
-      <BookList swr={{ data }} /> {/* 뿌리는애 */}
+      <BookForm swr={{ mutate }} />
+      <BookList swr={{ data }} />
     </Box>
   )
 }
