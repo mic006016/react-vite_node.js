@@ -6,7 +6,7 @@ import styled from "@emotion/styled"
 import { AlertContext } from "@/providers/AlertProvider"
 import { useNavigate } from "react-router-dom"
 import { setTokens } from "@/modules/api"
-import { api } from "@/modules/api"
+import { api, apiPost } from "@/modules/api"
 
 const FormWrapper = styled.div`
   display: flex;
@@ -65,11 +65,7 @@ export default function LoginForm() {
       setIsAlertOpen(true)
       return { usrId, usrPw }
     }
-    const rs = await api({
-      url: "/public/login",
-      type: "POST",
-      data: { usrId, usrPw },
-    })
+    const rs = await apiPost("/public/login", { usrId, usrPw })
     if (rs?.success === "OK") {
       dispatch(localLogOn(rs?.data?.data?.user || {}))
       setTokens(rs?.data?.accessToken || "", rs?.data?.refreshToken || "")

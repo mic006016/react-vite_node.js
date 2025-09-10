@@ -50,14 +50,15 @@ export const retrieveToken = async () => {
     window.dispatchEvent(
       new CustomEvent("ERROR_API", { code: 403, msg: "리프레시 토큰 오류" })
     )
+  } else {
+    const rs = await api({
+      url: "/public/refresh",
+      type: "POST",
+      data: {
+        refreshToken,
+      },
+    })
   }
-  const rs = await api({
-    url: "/public/refresh",
-    type: "POST",
-    data: {
-      refreshToken,
-    },
-  })
   if (rs?.success === "OK") {
     setTokens(rs?.data?.accessToken, rs?.data?.refreshToken)
     promiseQueue.forEach((config) => {
@@ -109,10 +110,13 @@ instance.interceptors.response.use(
   async (error) => {
     if (error?.status === 401) {
       console.log("===== 리플래시 토큰 갱신 요청 =====")
-      // TODO :: 리플래시 토큰 요청 코드
-      retrieveToken()
+      if (!isUpdatingToken) {
+        // 리플래시 토큰 요청 코드
+        retrieveToken()
+        promiseQueue.push(error.config)
+        isUpdatingToken = true
+      }
       promiseQueue.push(error.config)
-      isUpdatingToken = true
     }
     if (error.response?.status === 500) {
       // 공통 에러 처리

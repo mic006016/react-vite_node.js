@@ -4,7 +4,7 @@ import { Button } from "@mui/material"
 import { AlertContext } from "@/providers/AlertProvider"
 import { DayPicker } from "react-day-picker"
 import "react-day-picker/style.css"
-import { api } from "@/modules/api"
+import { api, apiPost } from "@/modules/api"
 
 const FormWrap = styled.form`
   display: flex;
@@ -42,15 +42,11 @@ export default function BookForm({ swr }) {
       setAlertMsg("내용은 필수사항입니다.")
       return
     }
-    const rs = await api({
-      url: "/book",
-      type: "POST",
-      data: {
-        title: form.title,
-        content: form.content,
-        writer: form.writer,
-        publish_d: form.publish_d,
-      },
+    const rs = await apiPost("/book", {
+      title: form.title,
+      content: form.content,
+      writer: form.writer,
+      publish_d: form.publish_d,
     })
     if (rs?.success === "OK") swr.mutate()
   }
