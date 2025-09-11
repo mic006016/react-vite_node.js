@@ -4,7 +4,7 @@ import { Button } from "@mui/material"
 import { AlertContext } from "@/providers/AlertProvider"
 import { DayPicker } from "react-day-picker"
 import "react-day-picker/style.css"
-import { api, apiPost } from "@/modules/api"
+import { api, apiFile, apiPost } from "@/modules/api"
 
 const FormWrap = styled.form`
   display: flex;
@@ -24,12 +24,12 @@ const DateWrap = styled.div`
 `
 export default function BookForm({ swr }) {
   const [selected, setSelected] = useState("")
+  const [upfile, setUpfile] = useState(null)
   const [form, setForm] = useState({
     title: "",
     content: "",
     writer: "",
     publish_d: "",
-    upfile: null,
   })
   const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext)
   const onSubmit = async (e) => {
@@ -43,12 +43,14 @@ export default function BookForm({ swr }) {
       setAlertMsg("내용은 필수사항입니다.")
       return
     }
-    const rs = await apiPost("/book", {
-      title: form.title,
-      content: form.content,
-      writer: form.writer,
-      publish_d: form.publish_d,
-    })
+    const formData = new FormData()
+    formData.append("title", from.title)
+    formData.append("content", from.content)
+    formData.append("writer", from.writer)
+    formData.append("publish_d", from.publish_d)
+    formData.append("upfile", from.upfile?.[0] || null)
+    console.log(upfile)
+    const rs = await apiPost("/book", formData)
     if (rs?.success === "OK") swr.mutate()
   }
   const onClickDate = (e) => {}
@@ -90,11 +92,8 @@ export default function BookForm({ swr }) {
         type="file"
         name="upfile"
         placeholder="첨부파일"
-        value={form.upfile}
         grow={1}
-        onChange={(e) =>
-          setForm((prev) => ({ ...prev, upfile: e.target.value }))
-        }
+        onChange={(e) => setUpfile(e.target.files)}
       />
       <Button variant="contained" onClick={onSubmit}>
         등록
