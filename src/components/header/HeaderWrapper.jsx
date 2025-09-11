@@ -71,7 +71,7 @@ export default function HeaderWrapper() {
   return (
     <HeaderRoot>
       <Typography variant="h4" component={Link} to="/">
-        Booldook
+        yellowoobi
       </Typography>
       <Breadcrumbs>
         <Typography component={Link} to="/shop">
